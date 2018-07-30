@@ -13,11 +13,11 @@ public class ProjectTree {
 		if(index != 0){
 			System.out.print(pre);
 			if(number == childrenSize - 1){
-				System.out.print("©»©¥");
-				pre += "¡¡¡¡";
+				System.out.print("â”—â”");
+				pre += "ã€€ã€€";
 			}else{
-				System.out.print("©Ç©¥");
-				pre += "©§¡¡";
+				System.out.print("â”£â”");
+				pre += "â”ƒã€€";
 			}
 		}
 		System.out.println(file.getName());
