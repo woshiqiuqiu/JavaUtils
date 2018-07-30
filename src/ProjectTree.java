@@ -31,7 +31,7 @@ public class ProjectTree {
 		}
 	}
 }
-class MyFileFilter implements FileFilter{
+class ProjectTreeFileFilter implements FileFilter{
 
 	//By File Name In prefix
 	private static String [] beAcceptFileName_pre = {
