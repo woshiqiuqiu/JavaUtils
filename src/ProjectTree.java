@@ -45,7 +45,7 @@ class MyFileFilter implements FileFilter{
 	
 	//By Path Name
 	private static String [] beAcceptPathName = {
-		
+		"git"
 	};
 	
 	@Override

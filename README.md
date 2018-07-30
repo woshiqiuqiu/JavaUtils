@@ -6,12 +6,16 @@ Java 自创的好玩的工具
 # 目录结构
 ## (*:ignore 忽略文件)
 	JavaUtils
-	┣━.classpath*
-	┣━.project*
+	┣━.classpath
+	┣━.gitignore
+	┣━.project
 	┣━.settings
-	┃　┗━org.eclipse.jdt.core.prefs
-	┣━bin*
-	┃　┣━ProjectTree.class
-	┃　┗━TreeNode.class
+	┃　┗━org.eclipse.core.resources.prefs
+	┣━bin
+	┃　┣━CodeCounter.class
+	┃　┣━MyFileFilter.class
+	┃　┗━ProjectTree.class
+	┣━README.md
 	┗━src
+	　　┣━CodeCounter.java
 	　　┗━ProjectTree.java
