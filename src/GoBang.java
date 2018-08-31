@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.JFrame;
@@ -59,6 +60,10 @@ class GameBackGround extends JFrame {
 	 * 棋盘图像绘制类
 	 */
 	class GamePanel extends JPanel {
+		// 实现棋盘
+		private Chess chess = new Chess();
+		//设置棋子大小
+		private static final int CHESS_SIZE = 20;
 
 		@Override
 		protected void paintComponent(Graphics arg0) {
@@ -66,25 +71,51 @@ class GameBackGround extends JFrame {
 			super.paintComponent(arg0);
 
 			int row, line;
-			//位移
+			// 位移
 			int disp = 15;
 
-			//打印线条和行号
-			for (row = 0; row < GameBackGround.GAME_BACK_GROUND_WEIGH; row++) {
+			
+			// 打印背景板
+			arg0.setColor(Color.YELLOW);
+			arg0.fillRect(disp, disp, GameBackGround.GAME_PANEL_WEIGH, GameBackGround.GAME_PANEL_HEIGH);
+			arg0.setColor(Color.BLACK);
+			// 打印线条和行号
+			for (row = 0; row < GameBackGround.GAME_BACK_GROUND_HEIGH; row++) {
 				arg0.drawString((row + 1) + "", 0, 25 * row + disp);
 				arg0.drawLine(disp, 25 * row + disp, disp + GameBackGround.GAME_PANEL_HEIGH, 25 * row + disp);
 			}
-			for (line = 0; line < GameBackGround.GAME_BACK_GROUND_HEIGH; line++) {
-				arg0.drawString((char)(line + 'A') + "", 25 * line + disp, disp - 5);
+			for (line = 0; line < GameBackGround.GAME_BACK_GROUND_WEIGH; line++) {
+				arg0.drawString((char) (line + 'A') + "", 25 * line + disp, disp - 5);
 				arg0.drawLine(disp + 25 * line, disp, disp + 25 * line, GameBackGround.GAME_PANEL_WEIGH + disp);
 			}
-			
-			//打印基础点(6 6\6 16\ 11 11\16 6\ 16 16)
+
+			// 打印基础点(6 6\6 16\ 11 11\16 6\ 16 16)
 			arg0.fillOval(5 * 25 + disp - 5, 5 * 25 + disp - 5, 10, 10);
 			arg0.fillOval(5 * 25 + disp - 5, 15 * 25 + disp - 5, 10, 10);
 			arg0.fillOval(10 * 25 + disp - 5, 10 * 25 + disp - 5, 10, 10);
 			arg0.fillOval(15 * 25 + disp - 5, 5 * 25 + disp - 5, 10, 10);
 			arg0.fillOval(15 * 25 + disp - 5, 15 * 25 + disp - 5, 10, 10);
+
+			for (int x = 0; x < GameBackGround.GAME_BACK_GROUND_WEIGH; x++) {
+				for (int y = 0; y < GameBackGround.GAME_BACK_GROUND_WEIGH; y++) {
+					int status = chess.getChessStatus(x, y);
+					switch(status) {
+					case 1:{
+						arg0.setColor(Color.WHITE);
+						arg0.fillOval((x - 1) * 25 + disp - CHESS_SIZE / 2, (y - 1) * 25 + disp - CHESS_SIZE / 2, CHESS_SIZE, CHESS_SIZE);
+						break;
+					}
+					case 2:{
+						arg0.setColor(Color.BLACK);
+						arg0.fillOval((y - 1) * 25 + disp - CHESS_SIZE / 2, (y - 1) * 25 + disp - CHESS_SIZE / 2, CHESS_SIZE, CHESS_SIZE);
+						break;
+					}
+					default:{
+						break;
+					}
+					}
+				}
+			}
 		}
 
 	}
@@ -97,7 +128,7 @@ class GameBackGround extends JFrame {
 		private Boolean[][][] Chesses;
 
 		public Chess() {
-			Chesses = new Boolean[19][19][2];
+			Chesses = new Boolean[21][21][2];
 			setChessVoid();
 		}
 
