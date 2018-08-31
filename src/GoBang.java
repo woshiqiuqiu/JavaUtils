@@ -20,61 +20,73 @@ class GameBackGround extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 //	设置棋盘大小:Weigh-宽 、Heigh-高
-	private static final byte GAME_BACK_GROUND_WEIGH = 19;
-	private static final byte GAME_BACK_GROUND_HEIGH = 19;
+	private static final byte GAME_BACK_GROUND_WEIGH = 21;
+	private static final byte GAME_BACK_GROUND_HEIGH = 21;
 //	设置游戏区域大小
-	private static final int GAME_PANEL_WEIGH = 450;
-	private static final int GAME_PANEL_HEIGH = 450;
+	private static final int GAME_PANEL_WEIGH = 500;
+	private static final int GAME_PANEL_HEIGH = 500;
 //	设置游戏窗口大小
 	private static final int GAME_WINDOWS_WEIGH = 900;
 	private static final int GAME_WINDOWS_HEIGH = 600;
-	
-	//游戏窗口
+
+	// 游戏窗口
 	private JFrame GameWindow;
-	
-	//静态字符串
+
+	// 静态字符串
 	private static final String WINDOW_TITLE = "五子棋";
-	
+
 //	构造
 	public GameBackGround() {
 		GameWindow = new JFrame();
 		GameWindow.setTitle(WINDOW_TITLE);
 		GameWindow.setSize(GAME_WINDOWS_WEIGH, GAME_WINDOWS_HEIGH);
 		GameWindow.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
+
 //		添加基本Panel
 		JPanel basePanel = new JPanel();
-		basePanel.setLayout(null);	//设置布局方式为绝对布局
-		
+		basePanel.setLayout(null); // 设置布局方式为绝对布局
+
 //		创建游戏画布并添加游戏画布
 		GamePanel gamePanel = new GamePanel();
-		gamePanel.setBounds(10, 10, 500, 500);
+		gamePanel.setBounds(10, 10, 550, 550);
 		basePanel.add(gamePanel);
-		
+
 		GameWindow.add(basePanel);
 		GameWindow.setVisible(true);
 	}
-	
+
 	/**
 	 * 棋盘图像绘制类
 	 */
-	class GamePanel extends JPanel{
+	class GamePanel extends JPanel {
 
 		@Override
 		protected void paintComponent(Graphics arg0) {
 			// TODO Auto-generated method stub
 			super.paintComponent(arg0);
-			
+
 			int row, line;
+			//位移
+			int disp = 15;
+
+			//打印线条和行号
+			for (row = 0; row < GameBackGround.GAME_BACK_GROUND_WEIGH; row++) {
+				arg0.drawString((row + 1) + "", 0, 25 * row + disp);
+				arg0.drawLine(disp, 25 * row + disp, disp + GameBackGround.GAME_PANEL_HEIGH, 25 * row + disp);
+			}
+			for (line = 0; line < GameBackGround.GAME_BACK_GROUND_HEIGH; line++) {
+				arg0.drawString((char)(line + 'A') + "", 25 * line + disp, disp - 5);
+				arg0.drawLine(disp + 25 * line, disp, disp + 25 * line, GameBackGround.GAME_PANEL_WEIGH + disp);
+			}
 			
-			for(row = 0; row < GameBackGround.GAME_BACK_GROUND_WEIGH; row++) {
-				arg0.drawLine(0, 25*row, 450, 25*row);
-			}
-			for(line = 0; line < GameBackGround.GAME_BACK_GROUND_HEIGH; line++) {
-				arg0.drawLine(25*line, 0, 25*line, 450);
-			}
+			//打印基础点(6 6\6 16\ 11 11\16 6\ 16 16)
+			arg0.fillOval(5 * 25 + disp - 5, 5 * 25 + disp - 5, 10, 10);
+			arg0.fillOval(5 * 25 + disp - 5, 15 * 25 + disp - 5, 10, 10);
+			arg0.fillOval(10 * 25 + disp - 5, 10 * 25 + disp - 5, 10, 10);
+			arg0.fillOval(15 * 25 + disp - 5, 5 * 25 + disp - 5, 10, 10);
+			arg0.fillOval(15 * 25 + disp - 5, 15 * 25 + disp - 5, 10, 10);
 		}
-		
+
 	}
 
 	/**
