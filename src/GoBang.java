@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import javax.swing.JFrame;
@@ -52,9 +53,15 @@ class GameBackGround extends JFrame {
 //		创建游戏画布并添加游戏画布
 		GamePanel gamePanel = new GamePanel();
 		gamePanel.setBounds(10, 10, 550, 550);
+		
 		MouseInterfaceImplement mii = new MouseInterfaceImplement();
 		mii.setGamePanel(gamePanel);
 		gamePanel.addMouseMotionListener(mii);
+		
+		MouseClick mc = new MouseClick();
+		mc.setGamePanel(gamePanel);
+		gamePanel.addMouseListener(mc);
+		
 		basePanel.add(gamePanel);
 
 		GameWindow.add(basePanel);
@@ -71,11 +78,20 @@ class GameBackGround extends JFrame {
 		private static final int CHESS_SIZE = 20;
 
 		private int mouseX = 11, mouseY = 11;
+		private boolean chess_color = true;
 
 		public void setMouseXY(int x, int y) {
 			mouseX = x;
 			mouseY = y;
 			this.repaint();
+		}
+
+		public void setChessOn() {
+			if (chess.addChess(mouseX, mouseY, chess_color)) {
+				chess_color = !chess_color;
+				System.out.println("Yes");
+				this.repaint();
+			}
 		}
 
 		@Override
@@ -114,12 +130,12 @@ class GameBackGround extends JFrame {
 					switch (status) {
 					case 1: {
 						arg0.setColor(Color.WHITE);
-						arg0.fillOval((x - 1) * 25 + disp, (y - 1) * 25 + disp, CHESS_SIZE, CHESS_SIZE);
+						arg0.fillOval((x - 1) * 25 + disp - CHESS_SIZE / 2, (y - 1) * 25 + disp - CHESS_SIZE / 2, CHESS_SIZE, CHESS_SIZE);
 						break;
 					}
 					case 2: {
 						arg0.setColor(Color.BLACK);
-						arg0.fillOval((y - 1) * 25 + disp - CHESS_SIZE / 2, (y - 1) * 25 + disp - CHESS_SIZE / 2,
+						arg0.fillOval((x - 1) * 25 + disp - CHESS_SIZE / 2, (y - 1) * 25 + disp - CHESS_SIZE / 2,
 								CHESS_SIZE, CHESS_SIZE);
 						break;
 					}
@@ -130,17 +146,69 @@ class GameBackGround extends JFrame {
 				}
 			}
 			arg0.setColor(Color.RED);
-			arg0.drawRect((mouseX - 1) * 25 + disp - CHESS_SIZE/2, (mouseY - 1) * 25 + disp - CHESS_SIZE/2, CHESS_SIZE, CHESS_SIZE);
+			arg0.drawRect((mouseX - 1) * 25 + disp - CHESS_SIZE / 2, (mouseY - 1) * 25 + disp - CHESS_SIZE / 2,
+					CHESS_SIZE, CHESS_SIZE);
 		}
 
 	}
-	
-	//鼠标监听事件
+
+	// 鼠标点击事件
+	class MouseClick implements MouseListener {
+
+		GamePanel gamePanel;
+
+		public void setGamePanel(GamePanel gamePanel) {
+			this.gamePanel = gamePanel;
+
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+			Thread thread = new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					gamePanel.setChessOn();
+				}
+			});
+			thread.start();
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+	}
+
+	// 鼠标移动监听事件
 	class MouseInterfaceImplement implements MouseMotionListener {
 
 		int x = 15, y = 15;
 		GamePanel gamePanel;
-		
+
 		public void setGamePanel(GamePanel gamePanel) {
 			this.gamePanel = gamePanel;
 		}
@@ -158,15 +226,15 @@ class GameBackGround extends JFrame {
 
 			// TODO Auto-generated method stub
 			Thread thread = new Thread(new Runnable() {
-
 				@Override
 				public void run() {
 					if (e.getX() - x > mouseThreshold || e.getX() - x < -mouseThreshold || e.getY() - y > mouseThreshold
 							|| e.getY() - y < -mouseThreshold) {
 						x = (e.getX() - 3) / 25 * 25;
 						y = (e.getY() - 3) / 25 * 25;
-						if(x / 25 + 1 > 21 || y / 25 + 1 > 21) return;
-						gamePanel.setMouseXY(x/25 + 1, y/25 + 1);
+						if (x / 25 + 1 > 21 || y / 25 + 1 > 21)
+							return;
+						gamePanel.setMouseXY(x / 25 + 1, y / 25 + 1);
 					}
 				}
 			});
@@ -191,7 +259,7 @@ class GameBackGround extends JFrame {
 			int cX, cY;
 			for (cX = 0; cX < Chesses.length; cX++) {
 				for (cY = 0; cY < Chesses[cX].length; cY++) {
-					Chesses[cX][cY][0] = false;
+					Chesses[cX][cY][0] = true;
 					Chesses[cX][cY][1] = false;
 				}
 			}
@@ -216,10 +284,9 @@ class GameBackGround extends JFrame {
 				if (Chesses[x][y][1]) {
 					return 1;
 				} else {
-					return 0;
+					return 2;
 				}
 			}
 		}
 	}
 }
-
