@@ -6,7 +6,7 @@ public class ProjectTree {
 	
 	public static void main(String[] args){
 		File file = new File(new File("").getAbsolutePath() + "\\");
-		new ProjectTree().printTree(0, file, file.listFiles(new MyFileFilter()).length, 0, "");
+		new ProjectTree().printTree(0, file, file.listFiles(new ProjectTreeFileFilter()).length, 0, "");
 	}
 	
 	public void printTree(int index, File file, int childrenSize, int number, String pre){
@@ -23,7 +23,7 @@ public class ProjectTree {
 		System.out.println(file.getName());
 		if(file.isDirectory()){
 			int i = 0;
-			File[] files = file.listFiles(new MyFileFilter());
+			File[] files = file.listFiles(new ProjectTreeFileFilter());
 			int file_length = files.length;
 			
 			for(File f : files)
