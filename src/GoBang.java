@@ -5,6 +5,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class GoBang {
@@ -93,8 +94,12 @@ class GameBackGround extends JFrame {
 				chess_color = !chess_color;
 				this.repaint();
 				if(GoBangCheck.check(chess.getChesses())) {
-					System.out.println("True");
-					
+					String user = chess_color == true?"黑色":"白色";
+					String success = "恭喜" + user + "获胜";
+					JOptionPane.showMessageDialog(this, success, "标题",JOptionPane.WARNING_MESSAGE);
+					chess.setChessVoid();
+					this.repaint();
+					System.out.println("success");
 				}
 			}
 		}
@@ -316,64 +321,7 @@ class GoBangCheck {
 
 	private static boolean checkOne(Boolean[][][] chess, int x, int y) {
 
-		System.out.println(x + " " + y);
-		int cx, cy, count;
-		boolean color = chess[x][y][1];
-
-		for (cx = x; cx < chess.length; cx++) {
-			if (chess[cx][y][1] != color  && !chess[cx][y][0])
-				break;
-		}
-		if (cx - x + 1 == 5)
-			return true;
-		for (cx = x; cx >= 0; cx--) {
-			if (chess[cx][y][1] != color && !chess[cx][y][0])
-				break;
-		}
-		if (x - cx + 1 == 5)
-			return true;
-
-		for (cy = y; cy < chess[x].length; cy++) {
-			if (chess[x][cy][1] != color && !chess[x][cy][0])
-				break;
-		}
-		if (cx - y + 1 == 5)
-			return true;
-		for (cy = y; cy >= 0; cy--) {
-			if (chess[x][cy][1] != color && !chess[x][cy][0])
-				break;
-		}
-		if (y - cx + 1 == 5)
-			return true;
-
-		for (count = 0, cx = x, cy = y; cx + count < chess.length && cy + count < chess[cx + count].length; count++) {
-			if(chess[cx + count][cy + count][1] != color && !chess[cx + count][cy + count][0]) {
-				break;
-			}
-		}
-		if(count == 5) return true;
-		
-		for (count = 0, cx = x, cy = y; cx + count < chess.length && cy - count >= 0; count++) {
-			if(chess[cx + count][cy - count][1] != color && !chess[cx + count][cy - count][0]) {
-				break;
-			}
-		}
-		if(count == 5) return true;
-
-		for (count = 0, cx = x, cy = y; cx - count >= 0 && cy + count < chess[cx - count].length; count++) {
-			if(chess[cx - count][cy + count][1] != color && !chess[cx - count][cy + count][0]) {
-				break;
-			}
-		}
-		if(count == 5) return true;
-		
-		for (count = 0, cx = x, cy = y; cx - count >= 0 && cy - count >= 0; count++) {
-			if(chess[cx - count][cy - count][1] != color && !chess[cx - count][cy - count][0]) {
-				break;
-			}
-		}
-		if(count == 5) return true;
-		
+		//重写！
 		return false;
 	}
 }
