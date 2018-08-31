@@ -23,8 +23,8 @@ class GameBackGround extends JFrame {
 	private static final byte GAME_BACK_GROUND_WEIGH = 19;
 	private static final byte GAME_BACK_GROUND_HEIGH = 19;
 //	设置游戏区域大小
-	private static final int GAME_PANEL_WEIGH = 475;
-	private static final int GAME_PANEL_HEIGH = 470;
+	private static final int GAME_PANEL_WEIGH = 450;
+	private static final int GAME_PANEL_HEIGH = 450;
 //	设置游戏窗口大小
 	private static final int GAME_WINDOWS_WEIGH = 900;
 	private static final int GAME_WINDOWS_HEIGH = 600;
@@ -41,6 +41,17 @@ class GameBackGround extends JFrame {
 		GameWindow.setTitle(WINDOW_TITLE);
 		GameWindow.setSize(GAME_WINDOWS_WEIGH, GAME_WINDOWS_HEIGH);
 		GameWindow.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+//		添加基本Panel
+		JPanel basePanel = new JPanel();
+		basePanel.setLayout(null);	//设置布局方式为绝对布局
+		
+//		创建游戏画布并添加游戏画布
+		GamePanel gamePanel = new GamePanel();
+		gamePanel.setBounds(10, 10, 500, 500);
+		basePanel.add(gamePanel);
+		
+		GameWindow.add(basePanel);
 		GameWindow.setVisible(true);
 	}
 	
@@ -57,10 +68,10 @@ class GameBackGround extends JFrame {
 			int row, line;
 			
 			for(row = 0; row < GameBackGround.GAME_BACK_GROUND_WEIGH; row++) {
-				arg0.drawLine(0, 25*row, 475, 25*row);
+				arg0.drawLine(0, 25*row, 450, 25*row);
 			}
 			for(line = 0; line < GameBackGround.GAME_BACK_GROUND_HEIGH; line++) {
-				arg0.drawLine(25*line, 0, 25*line, 475);
+				arg0.drawLine(25*line, 0, 25*line, 450);
 			}
 		}
 		
