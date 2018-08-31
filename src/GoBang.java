@@ -1,5 +1,7 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -50,6 +52,9 @@ class GameBackGround extends JFrame {
 //		创建游戏画布并添加游戏画布
 		GamePanel gamePanel = new GamePanel();
 		gamePanel.setBounds(10, 10, 550, 550);
+		MouseInterfaceImplement mii = new MouseInterfaceImplement();
+		mii.setGamePanel(gamePanel);
+		gamePanel.addMouseMotionListener(mii);
 		basePanel.add(gamePanel);
 
 		GameWindow.add(basePanel);
@@ -62,8 +67,16 @@ class GameBackGround extends JFrame {
 	class GamePanel extends JPanel {
 		// 实现棋盘
 		private Chess chess = new Chess();
-		//设置棋子大小
+		// 设置棋子大小
 		private static final int CHESS_SIZE = 20;
+
+		private int mouseX = 11, mouseY = 11;
+
+		public void setMouseXY(int x, int y) {
+			mouseX = x;
+			mouseY = y;
+			this.repaint();
+		}
 
 		@Override
 		protected void paintComponent(Graphics arg0) {
@@ -74,7 +87,6 @@ class GameBackGround extends JFrame {
 			// 位移
 			int disp = 15;
 
-			
 			// 打印背景板
 			arg0.setColor(Color.YELLOW);
 			arg0.fillRect(disp, disp, GameBackGround.GAME_PANEL_WEIGH, GameBackGround.GAME_PANEL_HEIGH);
@@ -99,25 +111,67 @@ class GameBackGround extends JFrame {
 			for (int x = 0; x < GameBackGround.GAME_BACK_GROUND_WEIGH; x++) {
 				for (int y = 0; y < GameBackGround.GAME_BACK_GROUND_WEIGH; y++) {
 					int status = chess.getChessStatus(x, y);
-					switch(status) {
-					case 1:{
+					switch (status) {
+					case 1: {
 						arg0.setColor(Color.WHITE);
-						arg0.fillOval((x - 1) * 25 + disp - CHESS_SIZE / 2, (y - 1) * 25 + disp - CHESS_SIZE / 2, CHESS_SIZE, CHESS_SIZE);
+						arg0.fillOval((x - 1) * 25 + disp, (y - 1) * 25 + disp, CHESS_SIZE, CHESS_SIZE);
 						break;
 					}
-					case 2:{
+					case 2: {
 						arg0.setColor(Color.BLACK);
-						arg0.fillOval((y - 1) * 25 + disp - CHESS_SIZE / 2, (y - 1) * 25 + disp - CHESS_SIZE / 2, CHESS_SIZE, CHESS_SIZE);
+						arg0.fillOval((y - 1) * 25 + disp - CHESS_SIZE / 2, (y - 1) * 25 + disp - CHESS_SIZE / 2,
+								CHESS_SIZE, CHESS_SIZE);
 						break;
 					}
-					default:{
+					default: {
 						break;
 					}
 					}
 				}
 			}
+			arg0.setColor(Color.RED);
+			arg0.drawRect((mouseX - 1) * 25 + disp - CHESS_SIZE/2, (mouseY - 1) * 25 + disp - CHESS_SIZE/2, CHESS_SIZE, CHESS_SIZE);
 		}
 
+	}
+	
+	//鼠标监听事件
+	class MouseInterfaceImplement implements MouseMotionListener {
+
+		int x = 15, y = 15;
+		GamePanel gamePanel;
+		
+		public void setGamePanel(GamePanel gamePanel) {
+			this.gamePanel = gamePanel;
+		}
+
+		// 鼠标阈值
+		private static final int mouseThreshold = 10;
+
+		@Override
+		public void mouseDragged(MouseEvent e) {
+
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent e) {
+
+			// TODO Auto-generated method stub
+			Thread thread = new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					if (e.getX() - x > mouseThreshold || e.getX() - x < -mouseThreshold || e.getY() - y > mouseThreshold
+							|| e.getY() - y < -mouseThreshold) {
+						x = (e.getX() - 3) / 25 * 25;
+						y = (e.getY() - 3) / 25 * 25;
+						if(x / 25 + 1 > 21 || y / 25 + 1 > 21) return;
+						gamePanel.setMouseXY(x/25 + 1, y/25 + 1);
+					}
+				}
+			});
+			thread.start();
+		}
 	}
 
 	/**
@@ -168,3 +222,4 @@ class GameBackGround extends JFrame {
 		}
 	}
 }
+
