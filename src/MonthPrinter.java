@@ -18,18 +18,12 @@ public class MonthPrinter {
 	private static int beforDay(int year, int month) {
 		int i, resDay;
 		boolean doubleYearFlag = isDoubleYear(year);
-		
 		resDay = 0;
 		for(i = 1900; i < year; i++) {
 			resDay += 365;
-			if(isDoubleYear(i)) {
-				resDay++;
-			}
+			if(isDoubleYear(i))	resDay++;
 		}
-		for(i = 1; i < month; i++) {
-			resDay += getMonthDay(i, doubleYearFlag);
-		}
-		
+		for(i = 1; i < month; i++) resDay += getMonthDay(i, doubleYearFlag);
 		return resDay;
 	}
 	
@@ -67,9 +61,7 @@ public class MonthPrinter {
 				"┃　一┃　二┃　三┃　四┃　五┃　六┃　七┃";
 		String end = "\n┗━━┻━━┻━━┻━━┻━━┻━━┻━━┛";
 		String center = "┣━━╋━━╋━━╋━━╋━━╋━━╋━━┫";
-		System.out.println(head);
-		System.out.print(center + "\n");
-		System.out.print("┃");
+		System.out.println(head + center + "\n┃");
 		int week = beforeDays % 7;
 		int count = 0;
 		for(int i = 0; i < week; i++) {
@@ -87,25 +79,15 @@ public class MonthPrinter {
 		for(int i = 0; i < 7 - count; i++) {
 			System.out.print("　　┃");
 		}
-		
 		System.out.println(end);
 	}
 	
+	//获得数字字符串
 	private static String getDay(int dayNumber) {
 		String Res = "";
-		int Ten = dayNumber / 10;
-		int temp = dayNumber % 10;
-		if(Ten == 0) {
-			Res += "　";
-		}
-		else {
-			Res += getFormatNumber(Ten);
-		}
-		
-		Res += getFormatNumber(temp);
-		
+		Res += dayNumber / 10 == 0?"　":getFormatNumber(dayNumber / 10);
+		Res += getFormatNumber(dayNumber % 10);
 		return Res;
-		
 	}
 	
 	private static String getFormatNumber(int n) {
