@@ -11,7 +11,7 @@ public class MonthPrinter {
 		System.out.println("Please input Month:");
 		month = scanner.nextInt();
 		
-		monthPrinter(beforDay(year, month), getMonthDay(month, isDoubleYear(year)));
+		printTable(beforDay(year, month), getMonthDay(month, isDoubleYear(year)));
 	}
 	
 //	获取在日期之前的天数
@@ -26,7 +26,6 @@ public class MonthPrinter {
 				resDay++;
 			}
 		}
-		
 		for(i = 1; i < month; i++) {
 			resDay += getMonthDay(i, doubleYearFlag);
 		}
@@ -44,9 +43,7 @@ public class MonthPrinter {
 		switch(month) {
 			case 1:case 3:case 5:case 7:case 8:case 10:case 12: return 31;
 			case 4:case 6:case 9:case 11: return 30;
-			default:{
-				return isDoubleYear?29:28;
-			}
+			default:{return isDoubleYear?29:28;}
 		}
 	}
 	
@@ -62,6 +59,70 @@ public class MonthPrinter {
 		for(int i = 1; i <= bePrintedDay; i++) {
 			System.out.print(i + "\t");
 			if((week + i) % 7 == 0) System.out.println();
+		}
+	}
+	
+	private static void printTable(int beforeDays, int bePrintedDay) {
+		String head = "┏━━┳━━┳━━┳━━┳━━┳━━┳━━┓\r\n" + 
+				"┃　一┃　二┃　三┃　四┃　五┃　六┃　七┃";
+		String end = "\n┗━━┻━━┻━━┻━━┻━━┻━━┻━━┛";
+		String center = "┣━━╋━━╋━━╋━━╋━━╋━━╋━━┫";
+		System.out.println(head);
+		System.out.print(center + "\n");
+		System.out.print("┃");
+		int week = beforeDays % 7;
+		int count = 0;
+		for(int i = 0; i < week; i++) {
+			System.out.print("　　┃");
+		}
+		for(int i = 1; i <= bePrintedDay; i++) {
+			if((week + i) % 7 == 1) {
+				System.out.print("\n" + center + "\n┃");
+				count = 0;
+			}
+			System.out.print(getDay(i) + "┃");
+			count++;
+		}
+		
+		for(int i = 0; i < 7 - count; i++) {
+			System.out.print("　　┃");
+		}
+		
+		System.out.println(end);
+	}
+	
+	private static String getDay(int dayNumber) {
+		String Res = "";
+		int Ten = dayNumber / 10;
+		int temp = dayNumber % 10;
+		if(Ten == 0) {
+			Res += "　";
+		}
+		else {
+			Res += getFormatNumber(Ten);
+		}
+		
+		Res += getFormatNumber(temp);
+		
+		return Res;
+		
+	}
+	
+	private static String getFormatNumber(int n) {
+		switch(n) {
+		case 0:return "０";
+		case 1:return "１";
+		case 2:return "２";
+		case 3:return "３";
+		case 4:return "４";
+		case 5:return "５";
+		case 6:return "６";
+		case 7:return "７";
+		case 8:return "８";
+		case 9:return "９";
+		default :{
+			return "";
+		}
 		}
 	}
 }
