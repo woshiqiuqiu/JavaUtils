@@ -321,7 +321,7 @@ class GoBangCheck {
 
 	private static boolean checkOne(Boolean[][][] chess, int x, int y) {
 
-		//重写！
+		//重写！ 
 		return false;
 	}
 }
